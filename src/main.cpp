@@ -88,19 +88,22 @@ void loop()
 
 CRGB leds[NUM_LEDS];
 
-void setup() {
+void setup() 
+{
   FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
   FastLED.setBrightness(BRIGHTNESS);
 
   // Alle LEDs auf Weiß setzen
-  for (int i = 0; i < NUM_LEDS; i++) {
+  for (int i = 0; i < NUM_LEDS; i++) 
+  {
     leds[i] = CRGB::White;
   }
 
   FastLED.show();
 }
 
-void loop() {
+void loop() 
+{
   // Nichts tun – LEDs bleiben an
 }
 
