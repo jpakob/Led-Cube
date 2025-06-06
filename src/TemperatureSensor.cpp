@@ -3,15 +3,14 @@
 
 #define DATA_PIN_TEMPERATURE_SENSOR 2 // PIN 2 for Temperature Sensor
 
+int pinDHT11 = DATA_PIN_TEMPERATURE_SENSOR; // Pin, an dem der DHT11 angeschlossen ist
+SimpleDHT11 dht11(pinDHT11);
+
 void init_TempSensor()
 {
-    int pinDHT11 = DATA_PIN_TEMPERATURE_SENSOR; // Pin, an dem der DHT11 angeschlossen ist
-    SimpleDHT11 dht11(pinDHT11);
-
     Serial.begin(115200);
     Serial.println("Initialisiere DHT11 Sensor...");
-    // Keine spezifische Initialisierungsfunktion notwendig,
-    // da SimpleDHT11 nur den Pin setzt. Wir testen einfach initial einmal das Auslesen:
+    
     float temperature = 0;
     float humidity = 0;
     int err = SimpleDHTErrSuccess;
@@ -32,7 +31,11 @@ void init_TempSensor()
     }
 }
 
-int get_Temperature()
+float get_Temperature()
 {
-    
+    float temperature = 0.0;
+    float humidity = 0.0;
+    dht11.read2(&temperature, &humidity, NULL);
+
+    return temperature;
 }

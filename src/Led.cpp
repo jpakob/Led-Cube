@@ -34,7 +34,6 @@ void init_Leds()
 
 void start_Cube()
 {
-  // Set Leds White
   for (int i = 0; i < NUM_LEDS_X; i++)
   {
     for(int n = 0; n < NUM_LEDS_Y; n++)
