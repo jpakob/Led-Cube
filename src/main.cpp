@@ -271,7 +271,7 @@ void loop()
 
 #if 1
 
-#include <FastLED.h>
+
 #include "Display.hpp"
 #include "Fan.hpp"
 #include "Led.hpp"
@@ -279,26 +279,7 @@ void loop()
 #include "TemperatureSensor.hpp"
 #include "Website.hpp"
 #include "Wifi.hpp"
-
-#define NUM_LEDS_X 8
-#define NUM_LEDS_Y 8
-#define NUM_LEDS_Z 8
-#define NUM_LEDS_Con 128
-#define DATA_PIN_0 12 // Plate 1 and 2           
-#define DATA_PIN_1 14 // Plate 3 and 4   
-#define DATA_PIN_2 27 // Plate 5 and 6   
-#define DATA_PIN_3 26 // Plate 7 and 8
-#define DATA_PIN_FAN 33 // PIN 33 for Fan
-#define DATA_PIN_MOTION_SENSOR 15 // PIN 15 for Motion Sensor
-#define DATA_PIN_TEMPERATURE_SENSOR 2 // PIN 2 for Temperature Sensor 
-#define DISPLAY_1_SDA 18 // PIN 18 for Diplay 1 Data 
-#define DISPLAY_1_SCK 19 // PIN 19 for Display 1 CLock
-#define DISPLAY_2_SDA 21 // PIN 21 for Diplay 2 Data 
-#define DISPLAY_2_SCK 22 // PIN 22 for Display 2 CLock 
-#define BRIGHTNESS 64
-#define LED_TYPE WS2812B
-#define COLOR_ORDER GRB
-
+ 
 
 void setup()
 {
