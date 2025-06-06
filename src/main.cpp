@@ -278,7 +278,7 @@ void loop()
 #include "MotionSensor.hpp"
 #include "TemperatureSensor.hpp"
 #include "Website.hpp"
-#include "WLANsupport.h"
+#include "Wifi.hpp"
 
 #define NUM_LEDS_X 8
 #define NUM_LEDS_Y 8
