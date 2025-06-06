@@ -1,13 +1,51 @@
 #include "Led.hpp"
+#include <FastLED.h>
+
+#define NUM_LEDS_X 8
+#define NUM_LEDS_Y 8
+#define NUM_LEDS_Z 8
+#define NUM_LEDS_Con 128
+#define DATA_PIN_0 12 // Plate 1 and 2           
+#define DATA_PIN_1 14 // Plate 3 and 4   
+#define DATA_PIN_2 27 // Plate 5 and 6   
+#define DATA_PIN_3 26 // Plate 7 and 8
+#define DATA_PIN_FAN 33 // PIN 33 for Fan
+#define BRIGHTNESS 64
+#define LED_TYPE WS2812B
+#define COLOR_ORDER GRB
+
+CRGB leds[NUM_LEDS_X][NUM_LEDS_Y][NUM_LEDS_Z];
 
 void init_Leds()
 {
+  FastLED.addLeds<LED_TYPE, DATA_PIN_0, COLOR_ORDER>(leds[0][0], NUM_LEDS_Con);
+  FastLED.setBrightness(BRIGHTNESS);
 
+  FastLED.addLeds<LED_TYPE, DATA_PIN_1, COLOR_ORDER>(leds[2][0], NUM_LEDS_Con);
+  FastLED.setBrightness(BRIGHTNESS);
+
+  FastLED.addLeds<LED_TYPE, DATA_PIN_2, COLOR_ORDER>(leds[4][0], NUM_LEDS_Con);
+  FastLED.setBrightness(BRIGHTNESS);
+
+  FastLED.addLeds<LED_TYPE, DATA_PIN_3, COLOR_ORDER>(leds[6][0], NUM_LEDS_Con);
+  FastLED.setBrightness(BRIGHTNESS);
 }
+
 
 void start_Cube()
 {
+  for (int i = 0; i < NUM_LEDS_X; i++)
+  {
+    for(int n = 0; n < NUM_LEDS_Y; n++)
+    {
+      for(int p = 0; p < NUM_LEDS_Z; p++)
+      {
+          leds[i][n][p] = CRGB::Red;
+      }
+    }
+  }
 
+  FastLED.show();
 }
 
 void update_Leds()

@@ -2,6 +2,6 @@
 #define _TEMPERATURESENSOR_HPP_
 
 void init_TempSensor();
-int get_Temperature();
+float get_Temperature();
 
 #endif
