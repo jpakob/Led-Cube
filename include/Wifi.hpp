@@ -1,5 +1,5 @@
-#ifndef _WLANSupport_h_
-#define _WLANSupport_h_
+#ifndef _WIFI_HPP_
+#define _WIFI_HPP_
 
 
 #include <Arduino.h>

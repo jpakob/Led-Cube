@@ -1,0 +1,16 @@
+#include "Display.hpp"
+
+void init_Display()
+{
+
+}
+
+void show_Temperature(int Temperature)
+{
+
+}
+
+void show_current_Mode(int Mode)
+{
+    
+}

@@ -2,7 +2,7 @@
 #include <WiFi.h>
 
 #include <HTTPClient.h>
-#include "WLANsupport.h"
+#include "Wifi.hpp"
 
 #define AP_WIFI_SSID "M5Core2"
 #define AP_WIFI_PW "12345678"
