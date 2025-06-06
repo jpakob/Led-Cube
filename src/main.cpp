@@ -1,4 +1,5 @@
-/*
+#if 0
+
 #include "WLANsupport.h"
 #include <NTPClient.h>
 #include "ESPAsyncWebServer.h"
@@ -22,10 +23,58 @@ void loop(void)
 {
   delay(600);
 }
-*/
 
+#endif
 
-/*
+#if 0
+
+#include <WiFi.h>
+#include "ESPAsyncWebServer.h"
+#include "SPIFFS.h"
+
+// Access Point Daten
+const char* ssid = "LED_Cube";
+const char* password = "12345678";
+
+AsyncWebServer server(80);
+
+void setup() {
+  Serial.begin(115200);
+
+  // SPIFFS starten
+  if (!SPIFFS.begin(true)) {
+    Serial.println("SPIFFS konnte nicht gestartet werden");
+    return;
+  }
+
+  // Access Point starten
+  WiFi.softAP(ssid, password);
+  Serial.println("Access Point gestartet");
+  Serial.print("IP Adresse: ");
+  Serial.println(WiFi.softAPIP());
+
+  // index.html beim Root-Pfad ausliefern
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html", "text/html");
+  });
+
+  // style.css ausliefern
+  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/style.css", "text/css");
+  });
+
+  // Server starten
+  server.begin();
+}
+
+void loop() {
+  // nichts hier
+}
+
+#endif
+
+#if 0
+
 #include <FastLED.h>
 
 #define NUM_LEDS 64
@@ -75,13 +124,15 @@ void loop()
     turningOn = !turningOn;
   }
 }
-*/
 
+#endif
+
+#if 0
 
 #include <FastLED.h>
 
 #define NUM_LEDS 64
-#define DATA_PIN 12            // Anpassen je nach Verdrahtung
+#define DATA_PIN 12 // Anpassen je nach Verdrahtung
 #define BRIGHTNESS 64
 #define LED_TYPE WS2812B
 #define COLOR_ORDER GRB
@@ -106,5 +157,157 @@ void loop()
 {
   // Nichts tun – LEDs bleiben an
 }
+#endif
+
+#if 0
+
+#include <U8g2lib.h>
+
+// Zwei Displays mit Software-I2C
+U8G2_SH1106_128X64_NONAME_F_SW_I2C display1(U8G2_R0, /* clock=*/ 22, /* data=*/ 21, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SH1106_128X64_NONAME_F_SW_I2C display2(U8G2_R0, /* clock=*/ 18, /* data=*/ 19, /* reset=*/ U8X8_PIN_NONE);
+
+unsigned long lastUpdate = 0;
+int counter = 0;
+
+void setup() {
+  display1.begin();
+  display2.begin();
+
+  display1.setFont(u8g2_font_logisoso32_tf);
+  display2.setFont(u8g2_font_logisoso32_tf);
+}
+
+void loop() {
+  // Einmal pro Sekunde erhöhen
+  if (millis() - lastUpdate >= 1000) {
+    lastUpdate = millis();
+    counter++;
+  }
+
+  char buf1[10];
+  char buf2[10];
+  snprintf(buf1, sizeof(buf1), "%d", counter);
+  snprintf(buf2, sizeof(buf2), "%d", counter * 2);  // Einfach zum Testen: zweiter Zähler ist doppelt so schnell
+
+  // Erstes Display zeigt Zähler 1
+  display1.firstPage();
+  do {
+    display1.drawUTF8(20, 48, buf1);
+  } while (display1.nextPage());
+
+  // Zweites Display zeigt Zähler 2
+  display2.firstPage();
+  do {
+    display2.drawUTF8(20, 48, buf2);
+  } while (display2.nextPage());
+
+  // Kurze Pause
+  delay(50);
+}
+#endif
+
+#if 0
+
+#include <Arduino.h>
+
+void setup() {
+  pinMode(27, OUTPUT);
+  digitalWrite(27, HIGH);  // Transistor schaltet durch → 5V an Last
+}
+
+void loop() {
+  // nichts tun
+}
+
+#endif
+
+#if 0
+#include <FastLED.h>
+
+#define LEDS_PER_STRIP 128
+#define BRIGHTNESS 64
+#define LED_TYPE WS2812B
+#define COLOR_ORDER GRB
+
+#define NUM_STRIPS 4
+
+#define DATA_PIN_1 12
+#define DATA_PIN_2 14
+#define DATA_PIN_3 27
+#define DATA_PIN_4 26
+
+CRGB leds1[LEDS_PER_STRIP];
+CRGB leds2[LEDS_PER_STRIP];
+CRGB leds3[LEDS_PER_STRIP];
+CRGB leds4[LEDS_PER_STRIP];
+
+void setup() 
+{
+  FastLED.setBrightness(BRIGHTNESS);
+
+  FastLED.addLeds<LED_TYPE, DATA_PIN_1, COLOR_ORDER>(leds1, LEDS_PER_STRIP);
+  FastLED.addLeds<LED_TYPE, DATA_PIN_2, COLOR_ORDER>(leds2, LEDS_PER_STRIP);
+  FastLED.addLeds<LED_TYPE, DATA_PIN_3, COLOR_ORDER>(leds3, LEDS_PER_STRIP);
+  FastLED.addLeds<LED_TYPE, DATA_PIN_4, COLOR_ORDER>(leds4, LEDS_PER_STRIP);
+
+  // Alle LEDs auf Weiß setzen
+  for (int i = 0; i < LEDS_PER_STRIP; i++) {
+    leds1[i] = CRGB::White;
+    leds2[i] = CRGB::White;
+    leds3[i] = CRGB::White;
+    leds4[i] = CRGB::White;
+  }
+
+  FastLED.show();
+}
+
+void loop() 
+{
+  // Nichts tun – LEDs bleiben an
+}
+
+#endif
+
+#if 1
+
+#include <FastLED.h>
+#include "Display.hpp"
+#include "Fan.hpp"
+#include "Led.hpp"
+#include "MotionSensor.hpp"
+#include "TemperatureSensor.hpp"
+#include "Website.hpp"
+#include "WLANsupport.h"
+
+#define NUM_LEDS_X 8
+#define NUM_LEDS_Y 8
+#define NUM_LEDS_Z 8
+#define NUM_LEDS_Con 128
+#define DATA_PIN_0 12 // Plate 1 and 2           
+#define DATA_PIN_1 14 // Plate 3 and 4   
+#define DATA_PIN_2 27 // Plate 5 and 6   
+#define DATA_PIN_3 26 // Plate 7 and 8
+#define DATA_PIN_FAN 33 // PIN 33 for Fan
+#define DATA_PIN_MOTION_SENSOR 15 // PIN 15 for Motion Sensor
+#define DATA_PIN_TEMPERATURE_SENSOR 2 // PIN 2 for Temperature Sensor 
+#define DISPLAY_1_SDA 18 // PIN 18 for Diplay 1 Data 
+#define DISPLAY_1_SCK 19 // PIN 19 for Display 1 CLock
+#define DISPLAY_2_SDA 21 // PIN 21 for Diplay 2 Data 
+#define DISPLAY_2_SCK 22 // PIN 22 for Display 2 CLock 
+#define BRIGHTNESS 64
+#define LED_TYPE WS2812B
+#define COLOR_ORDER GRB
 
 
+void setup()
+{
+
+}
+
+void loop()
+{
+
+}
+
+#endif
