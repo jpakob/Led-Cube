@@ -1,5 +1,6 @@
 #include "Led.hpp"
 #include <FastLED.h>
+#include "Website.hpp"
 
 #define NUM_LEDS_X 8
 #define NUM_LEDS_Y 8
@@ -50,12 +51,64 @@ void start_Cube()
 
 void update_Leds()
 {
+  int mode = get_current_Mode();
 
+  switch (mode) 
+  {
+        case 1:
+            Mode_1();
+            break;
+        case 2:
+            Mode_2();
+            break;
+        case 3:
+            Mode_3();
+            break;
+        default:
+            // LEDs aus oder Standardmuster
+            break;
+    }
 }
 
 void Mode_1()
 {
+   const int center = 4; // Zentrum bei 0-7 → 4
+    const CRGB color = CRGB::Blue; // Oder jede beliebige Farbe
+    const int delayTime = 100; // Zeit zwischen den Schritten in ms
 
+    // Expansionsphase (aus der Mitte nach außen)
+    for (int r = 0; r <= 4; r++) {
+        for (int x = center - r; x <= center + r; x++) {
+            for (int y = center - r; y <= center + r; y++) {
+                for (int z = center - r; z <= center + r; z++) {
+                    if (x >= 0 && x < NUM_LEDS_X &&
+                        y >= 0 && y < NUM_LEDS_Y &&
+                        z >= 0 && z < NUM_LEDS_Z) {
+                        leds[x][y][z] = color;
+                    }
+                }
+            }
+        }
+        FastLED.show();
+        delay(delayTime);
+    }
+
+    // Kontraktionsphase (zurück zur Mitte)
+    for (int r = 4; r >= 0; r--) {
+        for (int x = center - r; x <= center + r; x++) {
+            for (int y = center - r; y <= center + r; y++) {
+                for (int z = center - r; z <= center + r; z++) {
+                    if (x >= 0 && x < NUM_LEDS_X &&
+                        y >= 0 && y < NUM_LEDS_Y &&
+                        z >= 0 && z < NUM_LEDS_Z) {
+                        leds[x][y][z] = CRGB::Black;
+                    }
+                }
+            }
+        }
+        FastLED.show();
+        delay(delayTime);
+    }
 }
 
 void Mode_2()

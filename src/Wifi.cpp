@@ -19,8 +19,8 @@
 /****************************************************************************************************
                          Global                                                       
 *****************************************************************************************************/
-static const char* ssid = WIFI_SSID;
-static const char* password = WIFI_PW;
+const char* ssid = "FRITZ!Box 6591 Cable JE";
+const char* password = "46118655562450441459";
 static const char* AP_wifi_ssid = AP_WIFI_SSID;
 static const char* AP_wifi_password = AP_WIFI_PW;
 char AP_ssid[50];
@@ -33,50 +33,25 @@ void initWiFi(void);
 
 /******************************************************************************************************/
 void initWiFi(void) 
-/******************************************************************************************************/
 {
-    uint8_t connectCounter = 0;
-#ifdef __USE_AP__    
-    sprintf(AP_ssid, AP_wifi_ssid);
-     Serial.printf("%s\n",AP_ssid) ;                                                  
+    Serial.println("Starte nur Access Point Modus");
 
-     Serial.printf("Connecting...\n");
- 
-    WiFi.mode(WIFI_AP_STA);
-    //AP-Mode
-    WiFi.softAP(AP_ssid,AP_wifi_password);   
-    IPAddress IP_auto = WiFi.softAPIP();
-     Serial.printf("AP IP address auto: \n");
-     Serial.printf("Test %d:%d:%d:%d\n",IP_auto[0],IP_auto[1],IP_auto[2],IP_auto[3]);
-    delay(100);
-  
-     Serial.printf("Set softAPConfig\n");
-    IPAddress IP_fix(192, 168, 2, 33);
-    IPAddress NMask(255, 255, 255, 0);
-    WiFi.softAPConfig(IP_fix, IP_fix, NMask);
-  
-    IPAddress IP_readback = WiFi.softAPIP();
-     Serial.printf("AP IP address readback: \n");
-     Serial.printf("Test %d:%d:%d:%d\n",IP_readback[0],IP_readback[1],IP_readback[2],IP_readback[3]);
-#endif
+    WiFi.mode(WIFI_AP);
 
-    WiFi.begin(ssid, password);
-    WiFi.setSleep(false);
-     Serial.printf("Connecting to WiFi ..\n");
-    while (WiFi.status() != WL_CONNECTED) 
-    {
-         Serial.printf(".");
-        connectCounter ++;
-        delay(1000);
-        if(WLAN_MAX_RETRY == connectCounter )
-        {
-            ESP.restart();
-        }
-    }
-     Serial.printf("\nIP ");
-    Serial.println(WiFi.localIP());
- 
+    // feste IP-Adresse setzen (muss vor softAP() passieren!)
+    IPAddress ip(192, 168, 2, 33);
+    IPAddress gateway(192, 168, 2, 1);
+    IPAddress subnet(255, 255, 255, 0);
+    WiFi.softAPConfig(ip, gateway, subnet);
+
+    // Access Point starten
+    WiFi.softAP("Led_Cube", "#Led_Cube#");
+
+    IPAddress myIP = WiFi.softAPIP();
+    Serial.print("AP gestartet! IP-Adresse: ");
+    Serial.println(myIP);
 }
+
 
 
 void printWifiIP(void)
