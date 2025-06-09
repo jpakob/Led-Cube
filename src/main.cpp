@@ -283,12 +283,13 @@ void loop()
 
 void setup()
 {
-
+  init_Website();
 }
 
 void loop()
 {
-
+    Serial.println(get_current_Mode());
+    delay(2000);
 }
 
 #endif

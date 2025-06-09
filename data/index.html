@@ -7,15 +7,15 @@
     <title>LED Cube Controller</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    
 </head>
 
 <body class="flex flex-col items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white bg-opacity-10 backdrop-blur-lg rounded-xl shadow-lg p-6 mb-10">
+    <div class="card">
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2 tracking-wider">LED CUBE</h1>
-            <p class="text-blue-100">Steuerung deines 8x8x8 LED-Würfels</p>
-        </div>
+            <h1>LED CUBE</h1>
+            <p>Steuerung deines 8x8x8 LED-Würfels</p>
+    </div>
 
         <div class="cube-container mb-10">
             <div class="cube">
@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <div class="text-xs text-blue-200 text-center">
+    <div class="footer">
         <p>Verbunden mit LED Cube | ESP32 Access Point</p>
     </div>
 
@@ -134,14 +134,15 @@
             });
 
             function sendPattern(patternNumber) {
-                // Hier würde der Code stehen, um die Anfrage an den ESP32 zu senden
                 console.log('Pattern ' + patternNumber + ' gesendet');
+                fetch('/setPattern?pattern=' + patternNumber)
+                .then(response => response.text())
+                .then(data => console.log(data));
+        }
 
-                // In deinem echten Code würdest du einen HTTP-Request senden:
-                // fetch('/setPattern?pattern=' + patternNumber)
-                //   .then(response => response.text())
-                //   .then(data => console.log(data));
-            }
+        document.getElementById("pattern1").onclick = () => sendPattern(1);
+        document.getElementById("pattern2").onclick = () => sendPattern(2);
+        document.getElementById("pattern3").onclick = () => sendPattern(3);
 
             function showFeedback(button, message) {
                 const originalText = button.querySelector('span').textContent;
