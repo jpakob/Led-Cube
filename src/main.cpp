@@ -283,13 +283,83 @@ void loop()
 
 void setup()
 {
+  Serial.begin(115200);
   init_Website();
+  init_Leds();
+  init_Display();
+  init_TempSensor();
+  init_Fan();
 }
 
 void loop()
 {
-    Serial.println(get_current_Mode());
-    delay(2000);
+  //Serial.println(get_current_Mode());
+  update_Leds();
+  get_Temperature();
+  show_Temperature();
+  show_current_Mode();
+  Fan_On_Off();
+  delay(20);
 }
+
+#endif
+
+
+
+#if 0
+
+
+#include "U8g2lib.h"
+
+
+
+#define DISPLAY_1_SDA 18 // PIN 18 for Diplay 1 Data 
+#define DISPLAY_1_SCK 19 // PIN 19 for Display 1 CLock
+#define DISPLAY_2_SDA 21 // PIN 21 for Diplay 2 Data 
+#define DISPLAY_2_SCK 22 // PIN 22 for Display 2 CLock 
+
+U8G2_SH1106_128X64_NONAME_F_SW_I2C display1(U8G2_R0, /* clock=*/ DISPLAY_1_SCK, /* data=*/ DISPLAY_1_SDA, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SH1106_128X64_NONAME_F_SW_I2C display2(U8G2_R0, /* clock=*/ DISPLAY_2_SCK, /* data=*/ DISPLAY_2_SDA, /* reset=*/ U8X8_PIN_NONE);
+ 
+
+void setup()
+{
+  Serial.begin(115200);
+
+  display1.begin();
+  display2.begin();
+
+  display1.setFont(u8g2_font_logisoso32_tf);
+  display2.setFont(u8g2_font_logisoso32_tf);
+
+  display1.setDisplayRotation(U8G2_R2);  // 180° Rotation
+  display2.setDisplayRotation(U8G2_R2);
+
+
+}
+
+void loop()
+{
+  // Beispielwerte (ersetz das durch z. B. get_Temperature())
+  float temperature = 23.5;
+  float humidity = 57.2;
+
+  // === Display 1 (z. B. Temperatur) ===
+  display1.clearBuffer();                 // Bildschirm löschen (nur im Speicher)
+  display1.setCursor(0, 40);              // Position setzen
+  display1.print(temperature, 1);         // z. B. "23.5"
+  display1.print(" C");
+  display1.sendBuffer();                 // Anzeige aktualisieren
+
+  // === Display 2 (z. B. Luftfeuchtigkeit) ===
+  display2.clearBuffer();
+  display2.setCursor(0, 40);
+  display2.print(humidity, 1);           // z. B. "57.2"
+  display2.print(" %");
+  display2.sendBuffer();
+
+  delay(1000);  // Warte 1 Sekunde bis zur nächsten Anzeigeaktualisierung
+}
+
 
 #endif
