@@ -2,6 +2,6 @@
 #define _FAN_HPP_
 
 void init_Fan();
-void Fan_On_Off(int Temperature);
+void Fan_On_Off();
 
 #endif

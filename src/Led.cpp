@@ -55,6 +55,9 @@ void update_Leds()
 
   switch (mode) 
   {
+        case 0:
+            start_Cube();
+            break;
         case 1:
             Mode_1();
             break;
@@ -72,19 +75,38 @@ void update_Leds()
 
 void Mode_1()
 {
-   const int center = 4; // Zentrum bei 0-7 → 4
+  for (int i = 0; i < NUM_LEDS_X; i++)
+  {
+    for(int n = 0; n < NUM_LEDS_Y; n++)
+    {
+      for(int p = 0; p < NUM_LEDS_Z; p++)
+      {
+          leds[i][n][p] = CRGB::Green;
+      }
+    }
+  }
+
+  FastLED.show();
+}
+
+void Mode_2()
+{
+    const int center = 4; // Zentrum bei 0-7 → 4
     const CRGB color = CRGB::Blue; // Oder jede beliebige Farbe
     const int delayTime = 100; // Zeit zwischen den Schritten in ms
 
     // Expansionsphase (aus der Mitte nach außen)
-    for (int r = 0; r <= 4; r++) {
-        for (int x = center - r; x <= center + r; x++) {
-            for (int y = center - r; y <= center + r; y++) {
-                for (int z = center - r; z <= center + r; z++) {
-                    if (x >= 0 && x < NUM_LEDS_X &&
-                        y >= 0 && y < NUM_LEDS_Y &&
-                        z >= 0 && z < NUM_LEDS_Z) {
-                        leds[x][y][z] = color;
+    for (int r = 0; r <= 4; r++) 
+    {
+        for (int x = center - r; x <= center + r; x++) 
+        {
+            for (int y = center - r; y <= center + r; y++) 
+            {
+                for (int z = center - r; z <= center + r; z++) 
+                {
+                    if (x >= 0 && x < NUM_LEDS_X && y >= 0 && y < NUM_LEDS_Y && z >= 0 && z < NUM_LEDS_Z) 
+                    {
+                            leds[x][y][z] = color;
                     }
                 }
             }
@@ -94,13 +116,16 @@ void Mode_1()
     }
 
     // Kontraktionsphase (zurück zur Mitte)
-    for (int r = 4; r >= 0; r--) {
-        for (int x = center - r; x <= center + r; x++) {
-            for (int y = center - r; y <= center + r; y++) {
-                for (int z = center - r; z <= center + r; z++) {
-                    if (x >= 0 && x < NUM_LEDS_X &&
-                        y >= 0 && y < NUM_LEDS_Y &&
-                        z >= 0 && z < NUM_LEDS_Z) {
+    for (int r = 4; r >= 0; r--) 
+    {
+        for (int x = center - r; x <= center + r; x++) 
+        {
+            for (int y = center - r; y <= center + r; y++) 
+            {
+                for (int z = center - r; z <= center + r; z++) 
+                {
+                    if (x >= 0 && x < NUM_LEDS_X && y >= 0 && y < NUM_LEDS_Y && z >= 0 && z < NUM_LEDS_Z) 
+                    {
                         leds[x][y][z] = CRGB::Black;
                     }
                 }
@@ -108,15 +133,53 @@ void Mode_1()
         }
         FastLED.show();
         delay(delayTime);
-    }
-}
-
-void Mode_2()
-{
-
+    }   
 }
 
 void Mode_3()
 {
+    //init des Farbverlaufes für Mode 3
+    const int colorSteps = 100;
+    static CRGB colorPalette[colorSteps];
+    static bool initialized = false;
+    static int colorIndex = 0;
+    CRGB color;
+    const int delayTime = 100; // Zeit zwischen den Schritten in ms
+    
+
+     if (!initialized) {
+        for (int i = 0; i < colorSteps; i++) {
+            uint8_t hue = (i * 256L / colorSteps) % 256;
+            colorPalette[i] = CHSV(hue, 255, 255);
+        }
+        initialized = true;
+    }
+    
+
+
+    
+   
+    color = colorPalette[colorIndex];
+    colorIndex = (colorIndex + 1);
+    if(colorIndex>=colorSteps)
+    {
+        colorIndex=0;
+    }
+
+        for (int x = 0; x <= 7; x++) {
+            for (int y = 0; y <=7; y++) {
+                for (int z = 0;z <= 7; z++) {
+                    if (x >= 0 && x < NUM_LEDS_X &&
+                        y >= 0 && y < NUM_LEDS_Y &&
+                        z >= 0 && z < NUM_LEDS_Z) {
+                        leds[x][y][z] = color;
+                    }
+                }
+            }
+        }
+        FastLED.show();
+        
+        
+
     
 }
