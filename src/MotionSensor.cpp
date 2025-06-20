@@ -6,7 +6,6 @@
 void init_Motion()
 {
     pinMode(DATA_PIN_MOTION_SENSOR, INPUT);
-    Serial.begin(115200);
 }
 
 bool Person_detected()
@@ -14,6 +13,10 @@ bool Person_detected()
     int motion = digitalRead(DATA_PIN_MOTION_SENSOR);
     if (motion == HIGH) 
     {
-        Serial.println("Person detected!");
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }

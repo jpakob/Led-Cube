@@ -12,7 +12,7 @@ void init_Fan()
 
 void Fan_On_Off()
 {
-    if(temperature < 30)
+    if(temperature < 40)
     {
         digitalWrite(DATA_PIN_FAN, LOW); // Fan is running
     }
