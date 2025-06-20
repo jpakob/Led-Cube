@@ -97,10 +97,10 @@ body {
     padding: 1rem 1.5rem;
     font-size: 1.125rem;
     font-weight: 500;
-    color: rgb(255, 0, 234);
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 0.5rem;
-    box-shadow: 0 8px 15px rgb(255, 0, 0);
+    box-shadow: 0 8px 15px rgb(255, 153, 0);
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -118,6 +118,14 @@ body {
 .button:hover {
     transform: scale(1.05);
 }
+
+.button.pattern4 {
+    background: linear-gradient(to right, #facc15, #eab308);
+}
+.button.pattern4:hover {
+    background: linear-gradient(to right, #fbbf24, #ca8a04);
+}
+
 
 /* Farben für jede Button-Variante */
 .button.pattern1 {

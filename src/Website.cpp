@@ -7,22 +7,28 @@
 AsyncWebServer server(80);
 
 int current_Mode = 0;
+SemaphoreHandle_t current_Mode_Mutex;
 
 int get_current_Mode()
 {
-    return current_Mode;
+    xSemaphoreTake(current_Mode_Mutex, portMAX_DELAY);
+    int mode = current_Mode;
+    xSemaphoreGive(current_Mode_Mutex);
+    return mode;
 }
 
 void set_current_Mode(int mode)
 {
+    xSemaphoreTake(current_Mode_Mutex, portMAX_DELAY);
     current_Mode = mode;
+    xSemaphoreGive(current_Mode_Mutex);
     Serial.printf("Modus geändert auf %d\n", mode);
-    update_Leds();
+    //update_Leds();
 }
 
 void init_Website()
 {
-    Serial.begin(115200);
+    current_Mode_Mutex = xSemaphoreCreateMutex();
 
     if (!SPIFFS.begin(true)) 
     {

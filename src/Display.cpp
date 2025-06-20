@@ -4,6 +4,7 @@
 #include "U8g2lib.h"
 #include "TemperatureSensor.hpp"
 #include "Website.hpp"
+#include "Led.hpp"
 
 #define DISPLAY_1_SDA 18 // PIN 18 for Diplay 1 Data 
 #define DISPLAY_1_SCK 19 // PIN 19 for Display 1 CLock
@@ -42,13 +43,17 @@ void show_Temperature()
 
     if (showTemp) 
     {
+        xSemaphoreTake(temperature_mutex, portMAX_DELAY);
         display1.print(temperature, 1);
+        xSemaphoreGive(temperature_mutex);
         display1.print((char)176);  // Gradzeichen
         display1.print("C");
     } 
     else 
     {
+        xSemaphoreTake(humidity_mutex, portMAX_DELAY);
         display1.print(humidity, 1);
+        xSemaphoreGive(humidity_mutex);
         display1.print("%");
     }
 
@@ -59,8 +64,31 @@ void show_current_Mode()
 {
     display2.clearBuffer();
     display2.setCursor(6, 48);
-    display2.print("Mode ");
-    display2.print(current_Mode);           
+    xSemaphoreTake(current_Mode_Mutex, portMAX_DELAY);
+    if(current_Mode == 1)
+    {
+        display2.print("Rocket");
+    }
+    if(current_Mode == 2)
+    {
+        display2.setCursor(12, 48);
+        display2.print("Pulse");
+    }  
+    if(current_Mode == 3)
+    {
+        display2.print("Motion");
+    }
+    if(current_Mode == 0 && Switch_On_Off == false)
+    {
+        display2.setCursor(30, 48);
+        display2.print("Off");
+    }
+    if(current_Mode == 0 && Switch_On_Off == true)
+    {
+        display2.setCursor(35, 48);
+        display2.print("On");
+    }
+    xSemaphoreGive(current_Mode_Mutex);        
     display2.sendBuffer();
 }
 
