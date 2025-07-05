@@ -80,31 +80,3 @@ void loop()
 }
 
 #endif
-
-#if 0
-
-#include "MotionSensor.hpp"
-#include "Arduino.h"
-
-void setup()
-{
-  Serial.begin(115200);
-  init_Motion();
-}
-
-void loop()
-{
-    if(Person_detected() == true)
-    {
-      Serial.print("HIGH");
-      Serial.printf("\n");
-    }
-    else if(Person_detected() == false)
-    {
-      Serial.print("LOW");
-      Serial.printf("\n");
-    }
-    delay(500);
-}
-
-#endif

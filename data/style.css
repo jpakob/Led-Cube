@@ -126,6 +126,12 @@ body {
     background: linear-gradient(to right, #fbbf24, #ca8a04);
 }
 
+.button.pattern5 {
+    background: linear-gradient(to right, #ef4444, #f97316);
+}
+.button.pattern5:hover {
+    background: linear-gradient(to right, #dc2626, #ea580c);
+}
 
 /* Farben für jede Button-Variante */
 .button.pattern1 {
