@@ -78,6 +78,10 @@ void show_current_Mode()
     {
         display2.print("Motion");
     }
+    if(current_Mode == 4)
+    {
+        display2.print("Random");
+    }
     if(current_Mode == 0 && Switch_On_Off == false)
     {
         display2.setCursor(30, 48);

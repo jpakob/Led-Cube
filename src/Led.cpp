@@ -243,6 +243,29 @@ void Mode_3()
     }
 }
 
+void Mode_4()
+{
+    if (xSemaphoreTake(leds_mutex, portMAX_DELAY)) 
+    {
+        Switch_On_Off = true;
+        initialized = false;
+        
+        for (int x = 0; x < NUM_LEDS_X; x++) 
+        {
+            for (int y = 0; y < NUM_LEDS_Y; y++) 
+            {
+                for (int z = 0; z < NUM_LEDS_Z; z++) 
+                {
+                    uint8_t randomHue = random8();  // Zufälliger Farbton (0–255)
+                    leds[x][y][z] = CHSV(randomHue, 255, 255);  // Volle Sättigung & Helligkeit
+                }
+            }
+        }
+        FastLED.show();
+        xSemaphoreGive(leds_mutex);
+    }
+}
+
 void Switch_Off()
 {
     if (xSemaphoreTake(leds_mutex, portMAX_DELAY)) 
@@ -314,6 +337,9 @@ void update_Leds()
             Mode_3();
             break;
         case 4:
+            Mode_4();
+            break;
+        case 5:
             if (Switch_On_Off) 
             {
                 Switch_Off();
@@ -322,7 +348,7 @@ void update_Leds()
             {
                 Switch_On();
             }
-        break;
+            break;
         default:
             break;
     }

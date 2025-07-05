@@ -16,6 +16,7 @@ void update_Leds();
 void Mode_1();
 void Mode_2();
 void Mode_3();
+void Mode_4();
 void Switch_Off();
 void Switch_On();
 
